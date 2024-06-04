@@ -39,9 +39,8 @@ try {
         $types = ['isManyGroups' => PDO::PARAM_BOOL];
 
         if (execute($query, $params, $types)) {
-            $eventId = query(file_get_contents(APP_ROOT . DIRECTORY_SEPARATOR . 'query/events/get_event_id.sql'),
-                ['name' => $name, 'beginTime' => $beginTime, 'teacher' => $teacher, 'room' => $room, 'isManyGroups' => $isManyGroups, 'comment' => $comment],
-                ['name' => PDO::PARAM_STR, 'beginTime' => PDO::PARAM_STR, 'teacher' => PDO::PARAM_STR, 'room' => PDO::PARAM_STR, 'isManyGroups' => PDO::PARAM_BOOL, 'comment' => PDO::PARAM_STR])[0]["eventId"];
+            $eventId = singleQuery(file_get_contents(APP_ROOT . '/query/events/get_event_id.sql'), $params, $types);
+
             if (!empty($groupsIds)) {
                 $query = file_get_contents(APP_ROOT . '/query/event_group/create_relation.sql');
                 $count = count($groupsIds);
@@ -60,7 +59,6 @@ try {
 } catch (ApplicationException $applicationException) {
     throw $applicationException;
 } catch (Exception $exception) {
-    var_dump($exception);
     rollback();
     throw new ApplicationException('Возникла ошибка при создании события');
 }

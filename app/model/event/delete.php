@@ -6,12 +6,16 @@ try {
         throw new \exception\ApplicationException('Не передан идентификатор события', 400);
     }
     beginTransaction();
-    execute(file_get_contents(APP_ROOT . DIRECTORY_SEPARATOR . 'query/event_group/delete_relations_for_event.sql'),
+    execute(
+        file_get_contents(APP_ROOT . '/query/event_group/delete_relations_for_event.sql'),
         ['eventId' => $eventId],
-        ['eventId' => PDO::PARAM_INT]);
-    execute(file_get_contents(APP_ROOT . DIRECTORY_SEPARATOR . 'query/events/delete_event.sql'),
+        ['eventId' => PDO::PARAM_INT]
+    );
+    execute(
+        file_get_contents(APP_ROOT . '/query/events/delete_event.sql'),
         ['eventId' => $eventId],
-        ['eventId' => PDO::PARAM_INT]);
+        ['eventId' => PDO::PARAM_INT]
+    );
     commit();
     return true;
 } catch (\exception\ApplicationException $applicationException) {

@@ -9,7 +9,7 @@ function getRoute(): string
         throw new \exception\ApplicationException('Нельзя определить путь', 400);
     }
 
-    $fileLocation = APP_ROOT . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . $model . DIRECTORY_SEPARATOR . $action . '.php';
+    $fileLocation = APP_ROOT . '/model/' . $model . DIRECTORY_SEPARATOR . $action . '.php';
     if (file_exists($fileLocation)) {
         return $fileLocation;
     } else {

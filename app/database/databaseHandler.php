@@ -13,6 +13,25 @@ function setupConnection(): void
 }
 
 /**
+ * @return mixed|false
+ * @throws \exception\ApplicationException
+ */
+function singleQuery(string $query, array $params = [], array $types = [], int $fetchMode = PDO::FETCH_COLUMN)
+{
+    global $databaseHandler;
+
+    if ($databaseHandler === null) {
+        setupConnection();
+    }
+
+    $statement = $databaseHandler->prepare($query);
+    foreach ($params as $key => $value) {
+        $statement->bindValue($key, $value, $types[$key] ?? PDO::PARAM_STR);
+    }
+    $statement->execute();
+    return $statement->fetch($fetchMode);
+}
+/**
  * @return array|false
  * @throws \exception\ApplicationException
  */

@@ -18,7 +18,7 @@ return function (array $context) {
         $params['eventId'] = $context['eventId'];
         $types['eventId'] = PDO::PARAM_INT;
     }
-    if (query($query, $params, $types, PDO::FETCH_COLUMN)[0] === '0') {
+    if (!(bool)singleQuery($query, $params, $types)) {
         return true;
     }
     return 'Аудитория в это время занята';

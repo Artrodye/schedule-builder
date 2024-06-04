@@ -9,9 +9,11 @@ try {
     $validator = require_once APP_ROOT . '/model/event/validateEvents.php';
     if ($validator($context)) {
         beginTransaction();
-        execute(file_get_contents(APP_ROOT . '/query/event_group/delete_relations_for_event.sql'),
+        execute(
+            file_get_contents(APP_ROOT . '/query/event_group/delete_relations_for_event.sql'),
             ['eventId' => $eventId],
-            ['eventId' => PDO::PARAM_INT]);
+            ['eventId' => PDO::PARAM_INT]
+        );
 
         if (!empty($groupsIds)) {
             $query = file_get_contents(APP_ROOT . '/query/event_group/create_relation.sql');
@@ -24,9 +26,11 @@ try {
             }
             execute($query);
         }
-        execute(file_get_contents(APP_ROOT . '/query/events/update_event.sql'),
+        execute(
+            file_get_contents(APP_ROOT . '/query/events/update_event.sql'),
             ['eventId' => $eventId, 'name' => $name, 'beginTime' => $beginTime, 'teacher' => $teacher, 'room' => $room, 'isManyGroups' => $isManyGroups, 'comment' => $comment],
-            ['eventId' => PDO::PARAM_INT, 'name' => PDO::PARAM_STR, 'beginTime' => PDO::PARAM_STR, 'teacher' => PDO::PARAM_STR, 'room' => PDO::PARAM_STR, 'isManyGroups' => PDO::PARAM_BOOL, 'comment' => PDO::PARAM_STR]);
+            ['eventId' => PDO::PARAM_INT, 'isManyGroups' => PDO::PARAM_BOOL]
+        );
         commit();
         return true;
     }

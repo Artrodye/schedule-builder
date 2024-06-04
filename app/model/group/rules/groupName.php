@@ -9,9 +9,8 @@ return function (array $context) {
     if (!isset($name)) {
         return 'Не передано имя группы';
     }
-    if (query(file_get_contents(APP_ROOT . '/query/rules/group_name.sql'),
-            ['name' => $name],
-            ['name' => PDO::PARAM_STR])[0]["counters"] === "0") {
+    if (!(bool)singleQuery(file_get_contents(APP_ROOT . '/query/rules/group_name.sql'),
+            ['name' => $name])) {
         return true;
     }
     return 'Имя группы уже существует';

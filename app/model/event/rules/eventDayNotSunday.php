@@ -9,7 +9,7 @@ return function (array $context) {
     if (!isset($beginTime)) {
         return 'Не передано время начала пары';
     }
-    if (date('w', strtotime($beginTime)) !== "0") {
+    if ((bool)date('w', strtotime($beginTime))) {
         return true;
     }
     return 'Попытка назначить пару в воскресенье';
